@@ -1,0 +1,39 @@
+{
+  "firstNames": [
+    "Morten", "Jonas", "Emma", "Nora", "Elias", "Olivia", "Aksel", "Maja", "Filip", "Sara", "Linus", "Alma",
+    "Noah", "Sofie", "Oliver", "Ella", "William", "Emilie", "Isak", "Ingrid", "Jakob", "Frida", "Oskar", "Astrid",
+    "Henrik", "Thea", "Lukas", "Ida", "Magnus", "Amalie", "Mathias", "Hedda", "Tobias", "Tuva", "Emil", "Selma",
+    "Sander", "Aurora", "Markus", "Vilde", "Adrian", "Live", "Johan", "Solveig", "Kristian", "Sigrid", "Andreas", "Jenny",
+    "Martin", "Agnes", "Erik", "Ellinor", "Lars", "Hanna", "Ole", "Leah", "Even", "Maria", "Iver", "Julie",
+    "Vetle", "Anna", "Ludvig", "Eva", "Edvard", "Oda", "Herman", "Eline", "Birk", "Helle", "Brage", "Ragnhild",
+    "Trym", "Kari", "Sverre", "Marit", "Sigurd", "Anne", "Arne", "Lene", "Einar", "Heidi", "Knut", "Trine",
+    "Nils", "Silje", "Per", "Camilla", "Thomas", "Elise", "Daniel", "Pernille", "David", "Malin", "Samuel", "Karoline",
+    "Benjamin", "Kristine", "Gabriel", "Cecilie", "Sebastian", "Anette", "Jonathan", "Marte", "Alexander", "Lotte", "Victor", "Sunniva",
+    "Bjørn", "Tiril", "Håkon", "Ylva", "Øystein", "Vilje", "Sæmund", "Ingeborg", "Åsmund", "Iben", "Bård", "Åse"
+  ],
+  "lastNames": [
+    "Erikstad", "Berg", "Dahl", "Vik", "Lund", "Strand", "Holm", "Moen", "Lien", "Bakke", "Aas", "Hagen",
+    "Hansen", "Johansen", "Olsen", "Larsen", "Andersen", "Pedersen", "Nilsen", "Kristiansen", "Jensen", "Karlsen", "Johnsen", "Pettersen",
+    "Eriksen", "Bergersen", "Haugen", "Johannessen", "Andreassen", "Jacobsen", "Halvorsen", "Henriksen", "Svensen", "Iversen", "Knutsen", "Martinsen",
+    "Rasmussen", "Paulsen", "Simonsen", "Danielsen", "Gundersen", "Amundsen", "Arnesen", "Fredriksen", "Mathisen", "Mikkelsen", "Moe", "Solberg",
+    "Sandvik", "Solheim", "Eide", "Myhre", "Sunde", "Brekke", "Aune", "Tangen", "Nygård", "Haug", "Foss", "Engen",
+    "Hauge", "Berge", "Ruud", "Aasen", "Dale", "Lie", "Fjeld", "Viken", "Sveen", "Hovland", "Borgen", "Egeland",
+    "Fosse", "Håland", "Meland", "Lunde", "Helle", "Birkeland", "Espeland", "Rudi", "Sand", "Eng", "Vold", "Rye",
+    "Sæther", "Sætre", "Sørensen", "Sørheim", "Sørli", "Sørum", "Ødegård", "Ødegaard", "Østby", "Østlie", "Østbyhaug", "Øverland",
+    "Rønning", "Rønningen", "Røed", "Røstad", "Bråten", "Bråthen", "Våge", "Vågen", "Mæland", "Bø", "Bøe", "Bøhn",
+    "Nordby", "Vestby", "Nordvik", "Dalheim", "Gran", "Granli", "Furulund", "Skog", "Skoglund", "Sund", "Stølen", "Løken"
+  ],
+  "companies": [
+    "Testfirma", "Eksempelhandel", "Demodrift", "Testservice", "Eksempelpartner",
+    "Testhandel", "Testdrift", "Testpartner", "Testlogistikk", "Testverksted",
+    "Testbygg", "Testteknikk", "Testindustri", "Testtransport", "Testkontor",
+    "Testlager", "Testmarked", "Testdesign", "Testsystem", "Testutvikling",
+    "Eksempelfirma", "Eksempeldrift", "Eksempelservice", "Eksempellogistikk", "Eksempelverksted",
+    "Eksempelbygg", "Eksempelteknikk", "Eksempelindustri", "Eksempeltransport", "Eksempelkontor",
+    "Eksempellager", "Eksempelmarked", "Eksempeldesign", "Eksempelsystem", "Eksempelutvikling",
+    "Demofirma", "Demohandel", "Demoservice", "Demopartner", "Demologistikk",
+    "Demoverksted", "Demobygg", "Demoteknikk", "Demoindustri", "Demotransport",
+    "Demokontor", "Demolager", "Demomarked", "Demodesign", "Demosystem"
+  ],
+  "companySuffixes": ["AS", "ASA", "AB", "ApS", "A/S", "Ltd", "Limited", "GmbH", "LLC", "Inc", "BV", "Oy"]
+}

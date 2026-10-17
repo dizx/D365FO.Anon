@@ -1,0 +1,12 @@
+[
+  { "table": "DirPartyTable", "columns": { "Name": "partyName", "NameAlias": "clear", "KnownAs": "clear", "PhoneticFirstName": "clear", "PhoneticMiddleName": "clear", "PhoneticLastName": "clear" } },
+  { "table": "DirPersonName", "columns": { "FirstName": "firstName", "MiddleName": "clear", "LastName": "lastName" } },
+  { "table": "LogisticsPostalAddress", "columns": { "Address": "address", "Street": "street", "City": "city", "ZipCode": "clear", "State": "clear", "County": "clear", "DistrictName": "clear", "BuildingCompliment": "clear", "StreetNumber": "clear", "PostBox": "clear" } },
+  { "table": "LogisticsElectronicAddress", "columns": { "Locator": "contact", "Description": "clear", "LocatorExtension": "clear" } },
+  { "table": "LogisticsLocation", "columns": { "Description": "clear" } },
+  { "table": "CustBankAccount", "columns": { "Name": "clear", "AccountNum": "bankNumber", "IBAN": "clear", "SWIFTNo": "clear", "RegistrationNum": "clear" } },
+  { "table": "VendBankAccount", "columns": { "Name": "clear", "AccountNum": "bankNumber", "IBAN": "clear", "SWIFTNo": "clear", "RegistrationNum": "clear" } },
+  { "table": "BankAccountTable", "columns": { "Name": "clear", "AccountNum": "bankNumber", "IBAN": "clear", "SWIFTNo": "clear", "RegistrationNum": "clear" } },
+  { "table": "HcmPersonIdentificationNumber", "columns": { "IdentificationNumber": "identification", "Description": "clear" } },
+  { "table": "HcmPersonPrivateDetails", "columns": { "BirthDate": "birthDate", "BirthPlace": "clear" } }
+]
