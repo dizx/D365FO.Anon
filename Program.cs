@@ -202,10 +202,6 @@ internal sealed class Generator(Names names, string seed)
         "contact", "email", "phone8", "bankNumber", "identification", "birthDate",
         "nameOrCompany", "orgNumber", "birthDateText"
     };
-    //, "phone"
-    //"firstName", "lastName", "personName", "partyName", "clear", "street", "address", "city",
-    //"contact", "email", "phone", "bankNumber", "identification", "birthDate"
-
     private static DateTime BirthDateFor(ulong n) => new DateTime(1970, 1, 1).AddDays((int)(n % 10957));
 
     private string? Suffix(string original) => 
@@ -244,8 +240,6 @@ internal sealed class Generator(Names names, string seed)
             },
             "bankNumber" => $"TEST{token}",
             "identification" => $"TEST-{token}",
-            //"birthDate" => new DateTime(1970, 1, 1).AddDays((int)(Number(key, "birth") % 10957)),
-            //_ => throw new InvalidDataException($"Unknown transformation: {kind}")
             "birthDate" => BirthDateFor(Number(key, "birth")),
             "birthDateText" => BirthDateFor(Number(key, "birth")).ToString("yyyyMMdd", CultureInfo.InvariantCulture),
             "nameOrCompany" => Suffix(originalText) is not null ? Company(key, token, originalText) : Last(key),
@@ -482,7 +476,6 @@ internal static class SelfTest
         Reject(["--all-dataareas", "--all-dataareas"], "Duplicate option");
         Reject(["--dataarea", "USMF", "--dataarea", "DEMF"], "Duplicate option");
         Reject(["--all-dataareas", "--profile", "../x"], "--profile may only");
-
         var options = Options.Parse(["--server", "server", "--database", "db", "--dataarea", " USMF "]);
         Check(!options.Apply && new SqlConnectionStringBuilder(options.ConnectionString).IntegratedSecurity, "preview and Windows-auth defaults");
         Check(options.Scope.DataArea == "USMF", "company scope is retained and trimmed");
