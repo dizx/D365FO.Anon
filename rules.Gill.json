@@ -1,0 +1,103 @@
+[
+  {
+    "table": "CarCBDetailTable",
+    "columns": {
+      "CBSurOrFirmName": "nameOrCompany",
+      "CBFirstNameAttLine": "firstName",
+      "CBMiddelname": "clear",
+      "CBFirstNameAlias": "clear",
+      "CBLastNameAlias": "clear",
+      "AliasOneFirstName": "clear",
+      "AliasOneLastName": "clear",
+      "AliasPhone": "phone8",
+      "CBStreet": "street",
+      "CBHouseNo": "clear",
+      "CBStairway": "clear",
+      "CBBox": "clear",
+      "CBMobilTlph": "phone8",
+      "CBContactTlph": "phone8",
+      "CBFaxTlph": "phone8",
+      "CBOtherTlph": "phone8",
+      "CBPrivateMail": "email",
+      "CBJobMail": "email",
+      "CBTitleProfession": "clear",
+      "Notes": "clear",
+      "CarCbOrgNumber": "orgNumber",
+      "CBBirthDate": "birthDateText"
+    }
+  },
+  {
+    "table": "CarCBSalesMessageTable",
+    "columns": {
+      "CBEmail": "email",
+      "CBOwnerBirthDate": "birthDate",
+      "CarCbCustRemark": "clear",
+      "RemarkInternal": "clear",
+      "LSLeasingCustName": "partyName",
+      "CarCbOrgNumber": "orgNumber"
+    }
+  },
+  {
+    "table": "CarCBSalesmWork",
+    "columns": {
+      "CBSurOrFirmName": "nameOrCompany",
+      "CBFirstNameAttLine": "firstName",
+      "CBMiddelname": "clear",
+      "CBTitleProfession": "clear",
+      "CarCbOrgNumber": "orgNumber",
+      "CBBirthDate": "birthDateText",
+      "CBBirthDate2": "birthDate",
+      "CBStreet": "street",
+      "CBHouseNo": "clear",
+      "CBStairway": "clear",
+      "CBBox": "clear",
+      "CBContactTlph": "phone8",
+      "CBOtherTlph": "phone8",
+      "CBMobilTlph": "phone8",
+      "CBMailAddr": "email",
+      "LSLeasingCustName": "partyName",
+      "CarCbCustRemark": "clear",
+      "UserSurOrFirmName": "nameOrCompany",
+      "UserFirstNameAttLine": "firstName",
+      "UserMiddelname": "clear",
+      "UserStreet": "street",
+      "UserHouseNo": "clear",
+      "UserStairway": "clear",
+      "UserBox": "clear",
+      "UserContactTlph": "phone8",
+      "UserMailAddr": "email"
+    }
+  },
+  {
+    "table": "CarCBSalesmWork_tmp",
+    "columns": {
+      "CBSurOrFirmName": "nameOrCompany",
+      "CBFirstNameAttLine": "firstName",
+      "CBMiddelname": "clear",
+      "CBTitleProfession": "clear",
+      "CarCbOrgNumber": "orgNumber",
+      "CBBirthDate": "birthDateText",
+      "CBBirthDate2": "birthDate",
+      "BirthDate": "birthDate",
+      "CBStreet": "street",
+      "CBHouseNo": "clear",
+      "CBStairway": "clear",
+      "CBBox": "clear",
+      "CBContactTlph": "phone8",
+      "CBOtherTlph": "phone8",
+      "CBMobilTlph": "phone8",
+      "CBMailAddr": "email",
+      "LSLeasingCustName": "partyName",
+      "CarCbCustRemark": "clear",
+      "UserSurOrFirmName": "nameOrCompany",
+      "UserFirstNameAttLine": "firstName",
+      "UserMiddelname": "clear",
+      "UserStreet": "street",
+      "UserHouseNo": "clear",
+      "UserStairway": "clear",
+      "UserBox": "clear",
+      "UserContactTlph": "phone8",
+      "UserMailAddr": "email"
+    }
+  }
+]

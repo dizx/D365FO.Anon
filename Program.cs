@@ -24,6 +24,7 @@ internal static class Program
           --trust-server-certificate   Trust the SQL Server certificate
           --timeout SECONDS            Command timeout (default: 120)
           --self-test                  Run offline transformation checks
+          --profile NAME               Also load rules.NAME.json (customer-specific rules)
           --help                       Show this help
 
         Specify exactly one scope option for both preview and apply.
@@ -51,6 +52,13 @@ internal static class Program
             var names = Load<Names>(options.NamesPath);
             names.Validate();
             var rules = Load<List<TableRule>>(options.RulesPath);
+            if (options.ProfileRulesPath is { } profilePath)
+            {
+                if (!File.Exists(profilePath))
+                    throw new InvalidDataException($"Profile rules not found: {profilePath}");
+                rules.AddRange(Load<List<TableRule>>(profilePath));
+                Console.WriteLine($"PROFILE: {options.Profile} ({Path.GetFileName(profilePath)})");
+            }
             ValidateRules(rules);
             var generator = new Generator(names, options.Seed);
             await using var connection = new SqlConnection(options.ConnectionString);
@@ -94,13 +102,13 @@ internal static class Program
     }
 }
 
-internal sealed record Options(string ConnectionString, bool Apply, string NamesPath, string RulesPath, string Seed, int Timeout, DataScope Scope)
+internal sealed record Options(string ConnectionString, bool Apply, string NamesPath, string RulesPath, string Seed, int Timeout, DataScope Scope, string? Profile = null)
 {
     public static Options Parse(string[] args)
     {
         var values = new Dictionary<string, string>(StringComparer.Ordinal);
         var flags = new HashSet<string>(StringComparer.Ordinal);
-        string[] valueOptions = ["--server", "--database", "--dataarea", "--names", "--rules", "--seed-env", "--user", "--password-env", "--timeout"];
+        string[] valueOptions = ["--server", "--database", "--dataarea", "--names", "--rules", "--seed-env", "--user", "--password-env", "--timeout", "--profile"];
         for (var index = 0; index < args.Length; index++)
         {
             var name = args[index];
@@ -139,11 +147,22 @@ internal sealed record Options(string ConnectionString, bool Apply, string Names
         var timeout = 120;
         if (values.TryGetValue("--timeout", out var text) && (!int.TryParse(text, out timeout) || timeout < 1))
             throw new ArgumentException("--timeout must be a positive integer.");
+
+        string? profile = null;
+        if (values.TryGetValue("--profile", out var profileText))
+        {
+            profile = profileText.Trim();
+            if (profile.Length == 0 || !profile.All(c => char.IsAsciiLetterOrDigit(c) || c is '-' or '_'))
+                throw new ArgumentException("--profile may only contain letters, digits, '-' and '_'.");
+        }
+
         return new Options(builder.ConnectionString, flags.Contains("--apply"),
             values.GetValueOrDefault("--names", Path.Combine(AppContext.BaseDirectory, "names.json")),
             values.GetValueOrDefault("--rules", Path.Combine(AppContext.BaseDirectory, "rules.json")),
-            values.ContainsKey("--seed-env") ? EnvironmentValue("--seed-env") : "fo-anon-v1", timeout, scope);
+            values.ContainsKey("--seed-env") ? EnvironmentValue("--seed-env") : "fo-anon-v1", timeout, scope, profile);
     }
+    public string? ProfileRulesPath => Profile is null ? null
+        : Path.Combine(Path.GetDirectoryName(Path.GetFullPath(RulesPath))!, $"rules.{Profile}.json");
 }
 
 internal sealed record DataScope(string? DataArea)
@@ -180,8 +199,18 @@ internal sealed class Generator(Names names, string seed)
     public static readonly HashSet<string> Kinds = new(StringComparer.Ordinal)
     {
         "firstName", "lastName", "personName", "partyName", "clear", "street", "address", "city",
-        "contact", "email", "phone", "bankNumber", "identification", "birthDate"
+        "contact", "email", "phone8", "bankNumber", "identification", "birthDate",
+        "nameOrCompany", "orgNumber", "birthDateText"
     };
+    //, "phone"
+    //"firstName", "lastName", "personName", "partyName", "clear", "street", "address", "city",
+    //"contact", "email", "phone", "bankNumber", "identification", "birthDate"
+
+    private static DateTime BirthDateFor(ulong n) => new DateTime(1970, 1, 1).AddDays((int)(n % 10957));
+
+    private string? Suffix(string original) => 
+        names.CompanySuffixes.OrderByDescending(value => value.Length).FirstOrDefault(value => original.TrimEnd().EndsWith(" " + value, StringComparison.OrdinalIgnoreCase));
+
 
     private ulong Number(string key, string purpose) => System.Buffers.Binary.BinaryPrimitives.ReadUInt64LittleEndian(
         HMACSHA256.HashData(Encoding.UTF8.GetBytes(seed), Encoding.UTF8.GetBytes($"{key}|{purpose}")));
@@ -203,18 +232,24 @@ internal sealed class Generator(Names names, string seed)
             "street" or "address" => $"Test Street {token}",
             "city" => "Test City",
             "email" => $"contact{token}@example.invalid",
-            "phone" => "000" + (Number(key, "phone") % 100000000).ToString("D8", CultureInfo.InvariantCulture),
+            //"phone" => "000" + (Number(key, "phone") % 100000000).ToString("D8", CultureInfo.InvariantCulture),
+            "phone8" => (Number(key, "phone8") % 100000000).ToString("D8", CultureInfo.InvariantCulture),
             // FO LogisticsElectronicAddressMethodType: Phone=1, Email=2, URL=3, Fax=5.
             "contact" => contactType switch
             {
                 2 => $"contact{token}@example.invalid",
                 3 => $"https://example.invalid/contact/{token}",
-                1 or 5 => "000" + (Number(key, "phone") % 100000000).ToString("D8", CultureInfo.InvariantCulture),
+                1 or 5 => (Number(key, "phone8") % 100000000).ToString("D8", CultureInfo.InvariantCulture),
                 _ => $"TEST-{token}"
             },
             "bankNumber" => $"TEST{token}",
             "identification" => $"TEST-{token}",
-            "birthDate" => new DateTime(1970, 1, 1).AddDays((int)(Number(key, "birth") % 10957)),
+            //"birthDate" => new DateTime(1970, 1, 1).AddDays((int)(Number(key, "birth") % 10957)),
+            //_ => throw new InvalidDataException($"Unknown transformation: {kind}")
+            "birthDate" => BirthDateFor(Number(key, "birth")),
+            "birthDateText" => BirthDateFor(Number(key, "birth")).ToString("yyyyMMdd", CultureInfo.InvariantCulture),
+            "nameOrCompany" => Suffix(originalText) is not null ? Company(key, token, originalText) : Last(key),
+            "orgNumber" => (900000000 + (long)(Number(key, "org") % 100000000)).ToString(CultureInfo.InvariantCulture),
             _ => throw new InvalidDataException($"Unknown transformation: {kind}")
         };
     }
@@ -446,6 +481,8 @@ internal static class SelfTest
         Reject(["--dataarea", "USMFF"], "1–4 characters");
         Reject(["--all-dataareas", "--all-dataareas"], "Duplicate option");
         Reject(["--dataarea", "USMF", "--dataarea", "DEMF"], "Duplicate option");
+        Reject(["--all-dataareas", "--profile", "../x"], "--profile may only");
+
         var options = Options.Parse(["--server", "server", "--database", "db", "--dataarea", " USMF "]);
         Check(!options.Apply && new SqlConnectionStringBuilder(options.ConnectionString).IntegratedSecurity, "preview and Windows-auth defaults");
         Check(options.Scope.DataArea == "USMF", "company scope is retained and trimmed");
@@ -459,6 +496,7 @@ internal static class SelfTest
         Check(all.Scope.Includes(shared) && all.Scope.Includes(companySchema), "all-company shared table inclusion");
         Check(options.Scope.Predicate(companySchema) == " AND [DATAAREAID]=@dataArea", "parameterized company predicate");
         Check(all.Scope.Predicate(shared) == "" && all.Scope.Predicate(companySchema) == "", "all-company predicates");
+        Check(Options.Parse(["--server", "server", "--database", "db", "--all-dataareas", "--profile", "Gill"]).Profile == "Gill", "profile is parsed");
         try
         {
             options.Scope.Predicate(shared);
